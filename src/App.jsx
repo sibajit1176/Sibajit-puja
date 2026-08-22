@@ -1,27 +1,75 @@
 import { useState } from "react";
 
 import HeroSection from "./components/hero/HeroSection";
-import MemoriesSection from "./components/memories/MemoriesSection";
 
-function App() {
+const App = () => {
 
-    const [showMemories, setShowMemories] = useState(false);
+    const [opened, setOpened] =
+        useState(false);
 
     return (
-        <main className="min-h-screen bg-[#03000a]">
+        <main
+            className="
+                min-h-screen
+                overflow-x-hidden
+                bg-[#05020d]
+            "
+        >
 
-            <HeroSection
-                onSurpriseComplete={() => {
-                    setShowMemories(true);
-                }}
-            />
+            {!opened ? (
 
-            {showMemories && (
-                <MemoriesSection />
+                <HeroSection
+                    onOpen={() => {
+                        setOpened(true);
+                    }}
+                />
+
+            ) : (
+
+                <div
+                    className="
+                        flex
+                        min-h-screen
+                        items-center
+                        justify-center
+                        bg-[#05020d]
+                        px-6
+                        text-center
+                    "
+                >
+
+                    <div>
+
+                        <p
+                            className="
+                                text-sm
+                                uppercase
+                                tracking-[0.3em]
+                                text-pink-300
+                            "
+                        >
+                            Your surprise
+                        </p>
+
+                        <h2
+                            className="
+                                mt-4
+                                text-4xl
+                                font-semibold
+                                text-white
+                            "
+                        >
+                            Coming Soon ❤️
+                        </h2>
+
+                    </div>
+
+                </div>
+
             )}
 
         </main>
     );
-}
+};
 
 export default App;

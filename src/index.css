@@ -1,27 +1,31 @@
 @import "tailwindcss";
 
-* {
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
     min-width: 320px;
-    background: #03000a;
+    background: #05020d;
     color: white;
-    font-family: Inter, system-ui, sans-serif;
+    font-family:
+        Inter,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+}
+
+* {
+    box-sizing: border-box;
 }
 
 button {
-    font-family: inherit;
-}
-
-canvas {
-    display: block;
+    -webkit-tap-highlight-color: transparent;
 }

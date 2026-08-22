@@ -2,18 +2,31 @@ import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
-const HeartParticles = ({ count = 700 }) => {
+const HeartParticles = () => {
     const particlesRef = useRef();
 
-    const positions = useMemo(() => {
-        const data = new Float32Array(count * 3);
+    const particles = useMemo(() => {
+        const points = [];
 
-        for (let i = 0; i < count; i++) {
-            const t = Math.random() * Math.PI * 2;
+        /*
+        ==================================================
+        HEART OUTLINE SHAPE
+        ==================================================
+        */
 
-            // Heart equation
+        const heartShape = [];
+
+        const segments = 400;
+
+        for (let i = 0; i < segments; i++) {
+            const t =
+                (Math.PI * 2 * i) /
+                segments;
+
+            // Classic mathematical heart
             const x =
-                16 * Math.pow(Math.sin(t), 3);
+                16 *
+                Math.pow(Math.sin(t), 3);
 
             const y =
                 13 * Math.cos(t) -
@@ -21,60 +34,302 @@ const HeartParticles = ({ count = 700 }) => {
                 2 * Math.cos(3 * t) -
                 Math.cos(4 * t);
 
-            // Random fill
-            const fill = Math.sqrt(Math.random());
-
-            const px = (x / 16) * fill;
-
-            const py = (y / 16) * fill;
-
-            const pz =
-                (Math.random() - 0.5) * 0.35;
-
-            data[i * 3] = px;
-            data[i * 3 + 1] = py;
-            data[i * 3 + 2] = pz;
+            heartShape.push({
+                x: x / 16,
+                y: y / 16,
+            });
         }
 
-        return data;
-    }, [count]);
+        /*
+        ==================================================
+        CHECK WHETHER POINT IS INSIDE HEART
+        ==================================================
+        */
+
+        const isInsideHeart = (x, y) => {
+            let inside = false;
+
+            for (
+                let i = 0,
+                    j = heartShape.length - 1;
+                i < heartShape.length;
+                j = i++
+            ) {
+                const xi =
+                    heartShape[i].x;
+
+                const yi =
+                    heartShape[i].y;
+
+                const xj =
+                    heartShape[j].x;
+
+                const yj =
+                    heartShape[j].y;
+
+                const intersect =
+                    yi > y !== yj > y &&
+                    x <
+                        ((xj - xi) *
+                            (y - yi)) /
+                            (yj - yi) +
+                            xi;
+
+                if (intersect) {
+                    inside = !inside;
+                }
+            }
+
+            return inside;
+        };
+
+        /*
+        ==================================================
+        INNER HEART PARTICLES
+        ==================================================
+        */
+
+        const innerCount = 1800;
+
+        let created = 0;
+
+        while (
+            created < innerCount
+        ) {
+            const x =
+                (Math.random() * 2 - 1) *
+                1.15;
+
+            const y =
+                (Math.random() * 2 - 1) *
+                1.15;
+
+            if (
+                !isInsideHeart(
+                    x,
+                    y
+                )
+            ) {
+                continue;
+            }
+
+            /*
+            Slight organic depth.
+            This makes the heart feel
+            more 3D instead of flat.
+            */
+
+            const z =
+                (Math.random() - 0.5) *
+                0.35;
+
+            points.push(
+                x,
+                y,
+                z
+            );
+
+            created++;
+        }
+
+        /*
+        ==================================================
+        BRIGHT HEART OUTLINE
+        ==================================================
+        */
+
+        const outlineCount = 1200;
+
+        for (
+            let i = 0;
+            i < outlineCount;
+            i++
+        ) {
+            const index =
+                Math.floor(
+                    Math.random() *
+                        heartShape.length
+                );
+
+            const point =
+                heartShape[index];
+
+            /*
+            Small random spread
+            around the outline.
+            */
+
+            const spread =
+                0.012 +
+                Math.random() *
+                    0.018;
+
+            points.push(
+                point.x +
+                    (Math.random() - 0.5) *
+                        spread,
+
+                point.y +
+                    (Math.random() - 0.5) *
+                        spread,
+
+                (Math.random() - 0.5) *
+                    0.3
+            );
+        }
+
+        /*
+        ==================================================
+        EXTRA SPARKLE PARTICLES
+        ==================================================
+        
+        A few particles are placed
+        around the heart outline to
+        create the magical glowing look.
+        */
+
+        const sparkleCount = 180;
+
+        for (
+            let i = 0;
+            i < sparkleCount;
+            i++
+        ) {
+            const index =
+                Math.floor(
+                    Math.random() *
+                        heartShape.length
+                );
+
+            const point =
+                heartShape[index];
+
+            const distance =
+                0.03 +
+                Math.random() *
+                    0.12;
+
+            const angle =
+                Math.random() *
+                Math.PI *
+                2;
+
+            points.push(
+                point.x +
+                    Math.cos(angle) *
+                        distance,
+
+                point.y +
+                    Math.sin(angle) *
+                        distance,
+
+                (Math.random() - 0.5) *
+                    0.4
+            );
+        }
+
+        return new Float32Array(
+            points
+        );
+    }, []);
+
+    /*
+    ==================================================
+    HEART ANIMATION
+    ==================================================
+    */
 
     useFrame((state) => {
-        const time = state.clock.getElapsedTime();
+        if (
+            !particlesRef.current
+        ) {
+            return;
+        }
 
-        if (!particlesRef.current) return;
+        const time =
+            state.clock.getElapsedTime();
 
-        // Very gentle movement
+        /*
+        ----------------------------------------------
+        Gentle 3D rotation
+        ----------------------------------------------
+        */
+
         particlesRef.current.rotation.y =
-            Math.sin(time * 0.3) * 0.08;
+            Math.sin(
+                time * 0.35
+            ) * 0.08;
+
+        particlesRef.current.rotation.x =
+            Math.sin(
+                time * 0.25
+            ) * 0.025;
+
+        /*
+        ----------------------------------------------
+        Heartbeat
+        ----------------------------------------------
+        */
+
+        const pulse =
+            1 +
+            Math.sin(
+                time * 3
+            ) *
+                0.025;
+
+        particlesRef.current.scale.set(
+            0.9 * pulse,
+            0.9 * pulse,
+            0.9 * pulse
+        );
+
+        /*
+        ----------------------------------------------
+        Gentle floating
+        ----------------------------------------------
+        */
 
         particlesRef.current.position.y =
-            Math.sin(time * 0.8) * 0.03;
+            0.7 +
+            Math.sin(
+                time * 0.8
+            ) *
+                0.025;
     });
+
+    /*
+    ==================================================
+    RENDER
+    ==================================================
+    */
 
     return (
         <points
             ref={particlesRef}
-            position={[0, 0.75, 0]}
-            scale={0.095}
+            position={[0, 0.7, 0]}
         >
             <bufferGeometry>
                 <bufferAttribute
                     attach="attributes-position"
-                    count={positions.length / 3}
-                    array={positions}
+                    count={
+                        particles.length / 3
+                    }
+                    array={particles}
                     itemSize={3}
                 />
             </bufferGeometry>
 
             <pointsMaterial
-                color="#ffd1ee"
-                size={0.035}
+                color="#ff5fc4"
+                size={0.038}
                 sizeAttenuation
                 transparent
-                opacity={0.9}
-                blending={THREE.AdditiveBlending}
+                opacity={0.95}
                 depthWrite={false}
+                blending={
+                    THREE.AdditiveBlending
+                }
             />
         </points>
     );
