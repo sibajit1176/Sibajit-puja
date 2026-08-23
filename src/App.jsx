@@ -1,71 +1,53 @@
 import { useState } from "react";
 
 import HeroSection from "./components/hero/HeroSection";
+import SurpriseLoading from "./components/birthday/SurpriseLoading";
+import BirthdayScreen from "./components/birthday/BirthdayScreen";
 
 const App = () => {
+    const [stage, setStage] = useState("hero");
 
-    const [opened, setOpened] =
-        useState(false);
+    const handleOpenSurprise = () => {
+        // Start explosion/loading screen
+        setStage("loading");
+
+        // Automatically show birthday screen
+        setTimeout(() => {
+            setStage("birthday");
+        }, 4000);
+    };
 
     return (
-        <main
-            className="
-                min-h-screen
-                overflow-x-hidden
-                bg-[#05020d]
-            "
-        >
+        <main className="min-h-screen w-full overflow-hidden bg-[#03000a]">
 
-            {!opened ? (
+            {/* =====================================
+                STAGE 1
+            ===================================== */}
 
+            {stage === "hero" && (
                 <HeroSection
-                    onOpen={() => {
-                        setOpened(true);
-                    }}
+                    onOpen={handleOpenSurprise}
                 />
+            )}
 
-            ) : (
 
-                <div
-                    className="
-                        flex
-                        min-h-screen
-                        items-center
-                        justify-center
-                        bg-[#05020d]
-                        px-6
-                        text-center
-                    "
-                >
+            {/* =====================================
+                STAGE 2
+                HEART EXPLOSION + LOADING
+            ===================================== */}
 
-                    <div>
+            {stage === "loading" && (
+                <SurpriseLoading />
+            )}
 
-                        <p
-                            className="
-                                text-sm
-                                uppercase
-                                tracking-[0.3em]
-                                text-pink-300
-                            "
-                        >
-                            Your surprise
-                        </p>
 
-                        <h2
-                            className="
-                                mt-4
-                                text-4xl
-                                font-semibold
-                                text-white
-                            "
-                        >
-                            Coming Soon ❤️
-                        </h2>
+            {/* =====================================
+                STAGE 3
+                BIRTHDAY SCREEN
+            ===================================== */}
 
-                    </div>
-
-                </div>
-
+            {stage === "birthday" && (
+                <BirthdayScreen />
             )}
 
         </main>

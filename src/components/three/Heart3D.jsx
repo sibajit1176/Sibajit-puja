@@ -1,44 +1,111 @@
-import { useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import {
+    useFrame,
+} from "@react-three/fiber";
 
-const Heart3D = () => {
+import {
+    useRef,
+} from "react";
+
+import * as THREE from "three";
+
+
+const Heart3D = ({
+    exploding = false,
+}) => {
+
     const groupRef = useRef();
 
+
     useFrame((state) => {
-        if (!groupRef.current) return;
 
-        const time = state.clock.getElapsedTime();
+        if (!groupRef.current) {
+            return;
+        }
 
-        // Very subtle floating movement
-        groupRef.current.position.y =
-            0.65 + Math.sin(time * 0.8) * 0.035;
+        const time =
+            state.clock.getElapsedTime();
 
-        // Subtle 3D rotation
-        groupRef.current.rotation.y =
-            Math.sin(time * 0.35) * 0.08;
 
-        groupRef.current.rotation.x =
-            Math.sin(time * 0.25) * 0.025;
+        /* ==========================================
+           NORMAL HEART
+        =========================================== */
 
-        // Gentle heartbeat
-        const beat =
-            1 +
-            Math.sin(time * 3) * 0.018 +
-            Math.sin(time * 6) * 0.006;
+        if (!exploding) {
+
+            groupRef.current.position.y =
+                0.55 +
+                Math.sin(time * 0.8) *
+                    0.035;
+
+            groupRef.current.rotation.y =
+                Math.sin(time * 0.35) *
+                    0.08;
+
+            groupRef.current.rotation.x =
+                Math.sin(time * 0.25) *
+                    0.025;
+
+            const beat =
+                1 +
+                Math.sin(time * 3) *
+                    0.018;
+
+            groupRef.current.scale.set(
+                beat,
+                beat,
+                beat
+            );
+
+            return;
+        }
+
+
+        /* ==========================================
+           EXPLOSION
+        =========================================== */
+
+        const explosionTime =
+            Math.min(
+                time % 10,
+                3
+            );
+
+
+        const progress =
+            Math.min(
+                explosionTime / 1.2,
+                1
+            );
+
+
+        const scale =
+            THREE.MathUtils.lerp(
+                1,
+                0,
+                progress
+            );
+
 
         groupRef.current.scale.set(
-            beat,
-            beat,
-            beat
+            scale,
+            scale,
+            scale
         );
+
+
+        groupRef.current.rotation.z =
+            progress * Math.PI * 0.3;
+
     });
+
 
     return (
         <group
             ref={groupRef}
-            position={[0, 0.65, 0]}
+            position={[0, 0.55, 0]}
         />
     );
 };
+
 
 export default Heart3D;
