@@ -1,0 +1,1065 @@
+/* =========================================================
+   OUR MEMORIES
+   Mobile-first romantic galaxy
+   ========================================================= */
+
+.memories-section {
+    position: relative;
+    width: 100%;
+    height: 100svh;
+    min-height: 680px;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            ellipse at 50% 55%,
+            rgba(151, 28, 139, 0.30) 0%,
+            rgba(75, 10, 75, 0.20) 28%,
+            rgba(16, 5, 28, 0.72) 58%,
+            #05030d 100%
+        );
+
+    color: #fff;
+
+    isolation: isolate;
+
+    font-family:
+        "Trebuchet MS",
+        "Segoe UI",
+        sans-serif;
+
+    touch-action: manipulation;
+}
+
+
+/* =========================================================
+   GALAXY BACKGROUND
+   ========================================================= */
+
+.memories-background {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 35%,
+            rgba(255, 64, 213, 0.08),
+            transparent 28%
+        ),
+        radial-gradient(
+            circle at 20% 60%,
+            rgba(142, 30, 180, 0.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 60%,
+            rgba(255, 53, 182, 0.10),
+            transparent 28%
+        ),
+        linear-gradient(
+            180deg,
+            #08030f 0%,
+            #12051d 42%,
+            #09030f 100%
+        );
+}
+
+
+/* =========================================================
+   NEBULA
+   ========================================================= */
+
+.memories-nebula {
+    position: absolute;
+
+    border-radius: 50%;
+
+    pointer-events: none;
+
+    filter: blur(45px);
+
+    mix-blend-mode: screen;
+}
+
+.nebula-one {
+    width: 380px;
+    height: 380px;
+
+    left: 50%;
+    top: 36%;
+
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255, 48, 205, 0.28) 0%,
+            rgba(191, 38, 190, 0.16) 28%,
+            rgba(108, 21, 120, 0.08) 48%,
+            transparent 72%
+        );
+
+    animation: nebulaBreathing 7s ease-in-out infinite;
+}
+
+.nebula-two {
+    width: 300px;
+    height: 500px;
+
+    left: -100px;
+    top: 20%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(104, 37, 170, 0.18),
+            transparent 70%
+        );
+
+    animation: nebulaMove 12s ease-in-out infinite;
+}
+
+.nebula-three {
+    width: 280px;
+    height: 450px;
+
+    right: -100px;
+    top: 30%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(238, 38, 179, 0.15),
+            transparent 70%
+        );
+
+    animation: nebulaMoveReverse 15s ease-in-out infinite;
+}
+
+
+/* =========================================================
+   STARS
+   ========================================================= */
+
+.memories-stars {
+    position: absolute;
+    inset: 0;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.memory-star {
+    position: absolute;
+
+    display: block;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    box-shadow:
+        0 0 3px rgba(255, 255, 255, 0.95),
+        0 0 8px rgba(255, 110, 221, 0.65);
+
+    animation:
+        starBlink
+        var(--star-duration, 3s)
+        ease-in-out
+        infinite;
+
+    opacity: 0.55;
+}
+
+
+/* Make stars more romantic */
+
+.memory-star:nth-child(3n) {
+    background: #ff9ce9;
+
+    box-shadow:
+        0 0 4px #ff9ce9,
+        0 0 10px rgba(255, 53, 204, 0.8);
+}
+
+.memory-star:nth-child(7n) {
+    background: #cda7ff;
+
+    box-shadow:
+        0 0 4px #cda7ff,
+        0 0 11px rgba(170, 95, 255, 0.8);
+}
+
+.memory-star:nth-child(11n) {
+    transform: scale(1.8);
+
+    box-shadow:
+        0 0 5px white,
+        0 0 14px #ff72dc,
+        0 0 25px rgba(255, 61, 205, 0.7);
+}
+
+
+/* =========================================================
+   STATUS BAR
+   ========================================================= */
+
+.memories-status-bar {
+    position: absolute;
+
+    top: 10px;
+    left: 0;
+    right: 0;
+
+    z-index: 20;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding:
+        0 18px;
+
+    height: 24px;
+
+    color: rgba(255, 255, 255, 0.88);
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    pointer-events: none;
+}
+
+.status-right {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    font-size: 9px;
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.memories-header {
+    position: absolute;
+
+    z-index: 15;
+
+    top: 54px;
+    left: 0;
+    right: 0;
+
+    text-align: center;
+
+    pointer-events: none;
+}
+
+.memories-header h1 {
+    margin: 0;
+
+    color: #ffe8fb;
+
+    font-family:
+        "Trebuchet MS",
+        "Segoe UI",
+        sans-serif;
+
+    font-size: clamp(25px, 7vw, 34px);
+
+    font-weight: 500;
+
+    letter-spacing: -0.6px;
+
+    text-shadow:
+        0 0 5px rgba(255, 255, 255, 0.8),
+        0 0 12px rgba(255, 88, 217, 0.8),
+        0 0 28px rgba(255, 47, 204, 0.35);
+}
+
+.memories-header h1 span {
+    color: #ff70d9;
+
+    margin-left: 4px;
+
+    text-shadow:
+        0 0 6px #ff70d9,
+        0 0 16px #ff39c9;
+}
+
+
+/* =========================================================
+   MEMORY STAGE
+   ========================================================= */
+
+.memories-stage {
+    position: absolute;
+
+    z-index: 10;
+
+    left: 0;
+    right: 0;
+
+    /*
+      Important:
+      This is the central photo area.
+    */
+
+    top: 105px;
+    bottom: 65px;
+
+    width: 100%;
+    max-width: 430px;
+
+    margin: 0 auto;
+}
+
+
+/* =========================================================
+   ALL PHOTO CARDS
+   ========================================================= */
+
+.memory-card {
+    position: absolute;
+
+    display: block;
+
+    padding: 3px;
+
+    border: 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff 0%,
+            #ffeaff 30%,
+            #ff65d6 65%,
+            #ffffff 100%
+        );
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    overflow: visible;
+
+    box-shadow:
+        0 0 5px rgba(255, 255, 255, 0.65),
+        0 0 13px rgba(255, 61, 210, 0.55),
+        0 8px 25px rgba(0, 0, 0, 0.55);
+
+    transform-origin: center center;
+
+    transition:
+        filter 0.35s ease,
+        box-shadow 0.35s ease;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================================
+   IMAGE
+   ========================================================= */
+
+.memory-image-wrapper {
+    position: relative;
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
+    border-radius: 3px;
+
+    background: #16091c;
+}
+
+.memory-image-wrapper img {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    user-select: none;
+    -webkit-user-drag: none;
+
+    transition:
+        transform 0.45s ease,
+        filter 0.45s ease;
+}
+
+
+/* =========================================================
+   PHOTO GLOW
+   ========================================================= */
+
+.memory-glow {
+    position: absolute;
+
+    inset: -10px;
+
+    z-index: -1;
+
+    border-radius: 12px;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255, 61, 212, 0.52),
+            transparent 65%
+        );
+
+    filter: blur(12px);
+
+    opacity: 0.48;
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   REFERENCE IMAGE POSITIONS
+   =========================================================
+
+   1  = top center
+   2  = upper right
+   3  = middle blurred
+   4  = large left
+   5  = right middle
+   6  = lower left blurred
+   7  = bottom center
+*/
+
+
+/* TOP CENTER */
+
+.memory-1 {
+    width: 116px;
+    height: 134px;
+
+    left: 50%;
+    top: 4px;
+
+    transform: translateX(-50%) rotate(-1deg);
+
+    z-index: 8;
+}
+
+
+/* UPPER RIGHT */
+
+.memory-2 {
+    width: 100px;
+    height: 116px;
+
+    right: 12px;
+    top: 80px;
+
+    transform: rotate(-7deg);
+
+    z-index: 7;
+}
+
+
+/* CENTER BLURRED */
+
+.memory-3 {
+    width: 86px;
+    height: 101px;
+
+    left: 50%;
+    top: 176px;
+
+    transform: translateX(-50%) rotate(4deg);
+
+    z-index: 3;
+
+    filter: blur(3px);
+
+    opacity: 0.72;
+
+    box-shadow:
+        0 0 10px rgba(255, 65, 212, 0.38);
+}
+
+
+/* LARGE LEFT */
+
+.memory-4 {
+    width: 140px;
+    height: 157px;
+
+    left: 29px;
+    top: 201px;
+
+    transform: rotate(3deg);
+
+    z-index: 9;
+}
+
+
+/* RIGHT MIDDLE */
+
+.memory-5 {
+    width: 112px;
+    height: 128px;
+
+    right: 19px;
+    top: 274px;
+
+    transform: rotate(-2deg);
+
+    z-index: 8;
+}
+
+
+/* LOWER LEFT BLURRED */
+
+.memory-6 {
+    width: 88px;
+    height: 103px;
+
+    left: 20px;
+    top: 390px;
+
+    transform: rotate(-3deg);
+
+    z-index: 3;
+
+    filter: blur(3px);
+
+    opacity: 0.66;
+}
+
+
+/* BOTTOM CENTER */
+
+.memory-7 {
+    width: 119px;
+    height: 137px;
+
+    left: 50%;
+    top: 409px;
+
+    transform: translateX(-50%) rotate(-2deg);
+
+    z-index: 9;
+}
+
+
+/* =========================================================
+   HOVER / TAP
+   ========================================================= */
+
+.memory-card:hover {
+    filter: brightness(1.15);
+
+    box-shadow:
+        0 0 7px rgba(255, 255, 255, 0.9),
+        0 0 22px rgba(255, 66, 215, 0.9),
+        0 14px 30px rgba(0, 0, 0, 0.65);
+}
+
+.memory-card:hover img {
+    transform: scale(1.05);
+
+    filter:
+        brightness(1.1)
+        saturate(1.08);
+}
+
+.memory-card:active {
+    filter: brightness(1.18);
+}
+
+
+/* =========================================================
+   SMALL FLOATING HEARTS
+   ========================================================= */
+
+.floating-heart {
+    position: absolute;
+
+    z-index: 4;
+
+    color: #ff6cda;
+
+    font-size: 18px;
+
+    text-shadow:
+        0 0 5px #ff6cda,
+        0 0 12px #ff32c5,
+        0 0 24px rgba(255, 45, 200, 0.8);
+
+    pointer-events: none;
+
+    animation:
+        heartGlow
+        3s
+        ease-in-out
+        infinite;
+}
+
+
+/* =========================================================
+   BOTTOM REFLECTION / WATER-LIKE GLOW
+   ========================================================= */
+
+.memories-bottom-glow {
+    position: absolute;
+
+    z-index: 3;
+
+    left: -10%;
+    right: -10%;
+
+    bottom: -30px;
+
+    height: 145px;
+
+    pointer-events: none;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(255, 58, 207, 0.30),
+            rgba(180, 43, 183, 0.16),
+            transparent
+        );
+
+    filter: blur(10px);
+
+    opacity: 0.85;
+}
+
+
+/* Reflection lines */
+
+.memories-bottom-glow::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: 34px;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 90, 220, 0.25),
+            rgba(255, 255, 255, 0.35),
+            rgba(255, 90, 220, 0.25),
+            transparent
+        );
+
+    filter: blur(2px);
+}
+
+
+/* =========================================================
+   HOME INDICATOR
+   ========================================================= */
+
+.memories-home-indicator {
+    position: absolute;
+
+    z-index: 50;
+
+    bottom: 10px;
+
+    left: 50%;
+
+    width: 92px;
+    height: 4px;
+
+    transform: translateX(-50%);
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.92);
+
+    box-shadow:
+        0 0 6px rgba(255, 255, 255, 0.35);
+}
+
+
+/* =========================================================
+   PHOTO VIEWER
+   ========================================================= */
+
+.memory-viewer {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 100;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(96, 15, 93, 0.38),
+            rgba(3, 0, 10, 0.94) 68%
+        );
+
+    backdrop-filter: blur(12px);
+
+    -webkit-backdrop-filter: blur(12px);
+}
+
+
+/* =========================================================
+   VIEWER CONTENT
+   ========================================================= */
+
+.memory-viewer-content {
+    position: relative;
+
+    width: min(88vw, 350px);
+
+    padding: 8px 8px 18px;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.12),
+            rgba(255, 61, 212, 0.08),
+            rgba(20, 4, 28, 0.96)
+        );
+
+    border: 1px solid rgba(255, 156, 236, 0.48);
+
+    box-shadow:
+        0 0 18px rgba(255, 54, 210, 0.45),
+        0 0 55px rgba(190, 25, 176, 0.28),
+        0 25px 80px rgba(0, 0, 0, 0.7);
+}
+
+
+/* =========================================================
+   CLOSE BUTTON
+   ========================================================= */
+
+.memory-close {
+    position: absolute;
+
+    z-index: 10;
+
+    top: -12px;
+    right: -12px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid rgba(255, 183, 242, 0.7);
+
+    border-radius: 50%;
+
+    background:
+        rgba(34, 7, 40, 0.95);
+
+    color: #ffffff;
+
+    font-size: 26px;
+
+    line-height: 1;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 0 10px rgba(255, 74, 215, 0.65),
+        0 0 22px rgba(255, 45, 202, 0.35);
+}
+
+.memory-close:hover {
+    background: rgba(255, 56, 207, 0.25);
+
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   VIEWER IMAGE
+   ========================================================= */
+
+.viewer-image-frame {
+    width: 100%;
+
+    max-height: 70svh;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #100515;
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.viewer-image-frame img {
+    display: block;
+
+    width: 100%;
+
+    max-height: 70svh;
+
+    object-fit: contain;
+}
+
+
+/* =========================================================
+   VIEWER CAPTION
+   ========================================================= */
+
+.viewer-caption {
+    margin: 13px 5px 0;
+
+    text-align: center;
+
+    color: #ffd9f6;
+
+    font-size: 14px;
+
+    text-shadow:
+        0 0 8px rgba(255, 75, 211, 0.8);
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes starBlink {
+    0% {
+        opacity: 0.25;
+        transform: scale(0.75);
+    }
+
+    35% {
+        opacity: 0.9;
+        transform: scale(1);
+    }
+
+    55% {
+        opacity: 1;
+        transform: scale(1.25);
+    }
+
+    75% {
+        opacity: 0.45;
+        transform: scale(0.85);
+    }
+
+    100% {
+        opacity: 0.25;
+        transform: scale(0.75);
+    }
+}
+
+@keyframes heartGlow {
+    0%,
+    100% {
+        opacity: 0.45;
+        transform: translateY(0) scale(0.9);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-8px) scale(1.15);
+    }
+}
+
+@keyframes nebulaBreathing {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    50% {
+        opacity: 0.85;
+        transform: translate(-50%, -50%) scale(1.08);
+    }
+}
+
+@keyframes nebulaMove {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(30px, -20px) scale(1.08);
+    }
+}
+
+@keyframes nebulaMoveReverse {
+    0%,
+    100% {
+        transform: translate(0, 0) scale(1);
+    }
+
+    50% {
+        transform: translate(-30px, 25px) scale(1.08);
+    }
+}
+
+
+/* =========================================================
+   SMALL PHONES — 320px to 360px
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .memories-section {
+        min-height: 620px;
+    }
+
+    .memories-header {
+        top: 48px;
+    }
+
+    .memories-header h1 {
+        font-size: 24px;
+    }
+
+    .memories-stage {
+        top: 94px;
+        bottom: 58px;
+    }
+
+    .memory-1 {
+        width: 103px;
+        height: 119px;
+
+        top: 5px;
+    }
+
+    .memory-2 {
+        width: 88px;
+        height: 103px;
+
+        right: 8px;
+        top: 70px;
+    }
+
+    .memory-3 {
+        width: 76px;
+        height: 90px;
+
+        top: 160px;
+    }
+
+    .memory-4 {
+        width: 126px;
+        height: 141px;
+
+        left: 20px;
+        top: 184px;
+    }
+
+    .memory-5 {
+        width: 99px;
+        height: 114px;
+
+        right: 12px;
+        top: 250px;
+    }
+
+    .memory-6 {
+        width: 78px;
+        height: 91px;
+
+        left: 13px;
+        top: 355px;
+    }
+
+    .memory-7 {
+        width: 105px;
+        height: 121px;
+
+        top: 375px;
+    }
+
+    .memories-home-indicator {
+        width: 86px;
+    }
+}
+
+
+/* =========================================================
+   TALL PHONES
+   ========================================================= */
+
+@media (min-height: 780px) and (max-width: 600px) {
+
+    .memories-stage {
+        top: 110px;
+        bottom: 72px;
+    }
+
+    .memory-1 {
+        top: 8px;
+    }
+
+    .memory-2 {
+        top: 91px;
+    }
+
+    .memory-3 {
+        top: 190px;
+    }
+
+    .memory-4 {
+        top: 220px;
+    }
+
+    .memory-5 {
+        top: 300px;
+    }
+
+    .memory-6 {
+        top: 430px;
+    }
+
+    .memory-7 {
+        top: 450px;
+    }
+}

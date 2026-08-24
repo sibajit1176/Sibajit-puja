@@ -1,330 +1,322 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import "./MemoriesSection.css";
+
+const MEMORIES = [
+    {
+        id: 1,
+        image: "https://res.cloudinary.com/xhb80ud5/image/upload/v1787468080/photo4.jpg",
+        className: "memory-card memory-1",
+        rotation: -8,
+    },
+    {
+        id: 2,
+        image: "https://res.cloudinary.com/xhb80ud5/image/upload/v1787585167/photo2.jpg",
+        className: "memory-card memory-2",
+        rotation: 5,
+    },
+    {
+        id: 3,
+        image: "https://res.cloudinary.com/xhb80ud5/image/upload/v1787585166/photo5.jpg",
+        className: "memory-card memory-3",
+        rotation: -4,
+    },
+    {
+        id: 4,
+        image: "https://res.cloudinary.com/xhb80ud5/image/upload/v1787585165/photo3.jpg",
+        className: "memory-card memory-4",
+        rotation: 7,
+    },
+    {
+        id: 5,
+        image: "https://res.cloudinary.com/xhb80ud5/image/upload/v1787585543/WhatsApp_Image_2026-08-24_at_9.01.56_PM.jpg",
+        className: "memory-card memory-5",
+        rotation: -6,
+    },
+    {
+        id: 6,
+        image: "https://res.cloudinary.com/xhb80ud5/image/upload/v1787585278/WhatsApp_Image_2026-08-23_at_10.28.15_PM.jpg",
+        className: "memory-card memory-6",
+        rotation: 6,
+    },
+    {
+        id: 7,
+        image: "https://res.cloudinary.com/xhb80ud5/image/upload/v1787585166/photo5.jpg",
+        className: "memory-card memory-7",
+        rotation: -5,
+    },
+];
+
+const STARS = Array.from({ length: 140 }, (_, index) => ({
+    id: index,
+    left: `${Math.random() * 100}%`,
+    top: `${Math.random() * 100}%`,
+    size: `${Math.random() * 2.5 + 0.8}px`,
+    delay: `${Math.random() * 4}s`,
+    duration: `${Math.random() * 2 + 2}s`,
+}));
+
+const HEARTS = [
+    { left: "13%", top: "38%", delay: 0 },
+    { left: "76%", top: "30%", delay: 1.4 },
+    { left: "18%", top: "72%", delay: 2.2 },
+    { left: "83%", top: "69%", delay: 0.8 },
+    { left: "53%", top: "57%", delay: 1.8 },
+];
 
 const MemoriesSection = () => {
-
-    const [selectedPhoto, setSelectedPhoto] = useState(null);
-
-    /*
-     * IMPORTANT:
-     *
-     * Replace these filenames with the actual filenames
-     * of your girlfriend's photos.
-     *
-     * Put the photos inside:
-     *
-     * src/assets/photos/
-     */
-
-    const photos = [
-        {
-            id: 1,
-            src: "/photos/photo1.jpeg",
-        },
-        {
-            id: 2,
-            src: "/photos/photo2.jpeg",
-        },
-        {
-            id: 3,
-            src: "/photos/photo3.jpeg",
-        },
-        {
-            id: 4,
-            src: "/photos/photo4.jpeg",
-        },
-        {
-            id: 5,
-            src: "/photos/photo5.jpeg",
-        },
-        {
-            id: 6,
-            src: "/photos/photo6.jpg",
-        },
-        {
-            id: 7,
-            src: "/photos/photo7.jpg",
-        },
-        {
-            id: 8,
-            src: "/photos/photo8.jpg",
-        },
-    ];
-
+    const [selectedMemory, setSelectedMemory] = useState(null);
 
     return (
-        <section
-            className="
-                relative
-                min-h-screen
-                overflow-hidden
-                bg-[#05000d]
-                px-4
-                py-20
-                sm:px-6
-                sm:py-24
-            "
-        >
+        <section className="memories-section">
 
-            {/* =================================
-                BACKGROUND GLOW
-            ================================= */}
+            {/* =========================================
+                BACKGROUND
+            ========================================= */}
 
-            <div
-                className="
-                    pointer-events-none
-                    absolute
-                    left-1/2
-                    top-32
-                    h-[420px]
-                    w-[420px]
-                    -translate-x-1/2
-                    rounded-full
-                    bg-pink-600/10
-                    blur-[120px]
-                "
-            />
+            <div className="memories-background">
 
+                <div className="memories-nebula nebula-one" />
+                <div className="memories-nebula nebula-two" />
+                <div className="memories-nebula nebula-three" />
 
-            {/* =================================
-                SECTION HEADER
-            ================================= */}
+                {/* STARS */}
 
-            <div
-                className="
-                    relative
-                    z-10
-                    mx-auto
-                    mb-12
-                    max-w-xl
-                    text-center
-                "
-            >
+                <div className="memories-stars">
+                    {STARS.map((star) => (
+                        <span
+                            key={star.id}
+                            className="memory-star"
+                            style={{
+                                left: star.left,
+                                top: star.top,
+                                width: star.size,
+                                height: star.size,
+                                animationDelay: star.delay,
+                                animationDuration: star.duration,
+                            }}
+                        />
+                    ))}
+                </div>
 
-                <p
-                    className="
-                        mb-3
-                        text-[10px]
-                        font-medium
-                        uppercase
-                        tracking-[0.4em]
-                        text-pink-300/80
-                    "
-                >
-                    A little piece of you
-                </p>
+                {/* FLOATING HEARTS */}
 
-
-                <h2
-                    className="
-                        text-4xl
-                        font-semibold
-                        tracking-tight
-                        text-white
-                        sm:text-5xl
-                    "
-                >
-                    Our Memories
-                </h2>
-
-
-                <p
-                    className="
-                        mx-auto
-                        mt-4
-                        max-w-[310px]
-                        text-sm
-                        leading-6
-                        text-white/45
-                        sm:max-w-md
-                    "
-                >
-                    A collection of moments that make
-                    you even more beautiful.
-                </p>
-
+                {HEARTS.map((heart, index) => (
+                    <motion.div
+                        key={index}
+                        className="floating-heart"
+                        style={{
+                            left: heart.left,
+                            top: heart.top,
+                        }}
+                        animate={{
+                            y: [0, -10, 0],
+                            scale: [1, 1.15, 1],
+                            opacity: [0.35, 1, 0.35],
+                        }}
+                        transition={{
+                            duration: 3,
+                            repeat: Infinity,
+                            delay: heart.delay,
+                            ease: "easeInOut",
+                        }}
+                    >
+                        ♥
+                    </motion.div>
+                ))}
             </div>
 
 
-            {/* =================================
-                PHOTO GRID
-            ================================= */}
+            {/* =========================================
+                TITLE
+                NO IPHONE STATUS BAR
+            ========================================= */}
 
-            <div
-                className="
-                    relative
-                    z-10
-                    mx-auto
-                    grid
-                    w-full
-                    max-w-5xl
-                    grid-cols-2
-                    gap-3
-                    sm:gap-5
-                    md:grid-cols-3
-                "
+            <motion.header
+                className="memories-header"
+                initial={{
+                    opacity: 0,
+                    y: -18,
+                }}
+                animate={{
+                    opacity: 1,
+                    y: 0,
+                }}
+                transition={{
+                    duration: 1.2,
+                    ease: "easeOut",
+                }}
             >
+                <h1>
+                    Our Memories <span>♥</span>
+                </h1>
+            </motion.header>
 
-                {photos.map((photo, index) => (
 
-                    <button
-                        key={photo.id}
-                        type="button"
-                        onClick={() =>
-                            setSelectedPhoto(photo)
-                        }
-                        className={`
-                            group
-                            relative
-                            overflow-hidden
-                            rounded-2xl
-                            border
-                            border-white/10
-                            bg-white/5
-                            shadow-[0_15px_50px_rgba(0,0,0,0.35)]
-                            transition-all
-                            duration-500
-                            hover:-translate-y-1
-                            hover:border-pink-400/40
-                            hover:shadow-[0_20px_60px_rgba(255,45,149,0.18)]
-                            active:scale-[0.98]
-                            ${
-                                index % 3 === 0
-                                    ? "aspect-[4/5]"
-                                    : "aspect-[3/4]"
-                            }
-                        `}
+            {/* =========================================
+                MEMORY CARDS
+            ========================================= */}
+
+            <div className="memories-stage">
+
+                {MEMORIES.map((memory, index) => (
+                    <motion.button
+                        key={memory.id}
+                        className={memory.className}
+                        style={{
+                            rotate: memory.rotation,
+                        }}
+                        initial={{
+                            opacity: 0,
+                            scale: 0.75,
+                        }}
+                        animate={{
+                            opacity: 1,
+                            scale: 1,
+                            y: [0, -7, 0],
+                        }}
+                        transition={{
+                            opacity: {
+                                duration: 0.8,
+                                delay: 0.2 + index * 0.12,
+                            },
+
+                            scale: {
+                                duration: 0.8,
+                                delay: 0.2 + index * 0.12,
+                            },
+
+                            y: {
+                                duration: 4 + (index % 3),
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                delay: index * 0.3,
+                            },
+                        }}
+                        whileHover={{
+                            scale: 1.08,
+                            rotate: memory.rotation + 2,
+                        }}
+                        whileTap={{
+                            scale: 0.94,
+                        }}
+                        onClick={() => setSelectedMemory(memory)}
                     >
 
-                        <img
-                            src={photo.src}
-                            alt="Beautiful memory"
-                            className="
-                                h-full
-                                w-full
-                                object-cover
-                                transition-transform
-                                duration-700
-                                group-hover:scale-105
-                            "
-                            loading="lazy"
-                        />
-
-
-                        {/* subtle overlay */}
-
-                        <div
-                            className="
-                                pointer-events-none
-                                absolute
-                                inset-0
-                                bg-gradient-to-t
-                                from-black/25
-                                via-transparent
-                                to-transparent
-                                opacity-70
-                            "
-                        />
-
-
-                        {/* small heart */}
-
-                        <div
-                            className="
-                                absolute
-                                bottom-3
-                                right-3
-                                flex
-                                h-8
-                                w-8
-                                items-center
-                                justify-center
-                                rounded-full
-                                border
-                                border-white/20
-                                bg-black/25
-                                text-sm
-                                backdrop-blur-md
-                            "
-                        >
-                            ❤️
+                        <div className="memory-image-wrapper">
+                            <img
+                                src={memory.image}
+                                alt={`Memory ${memory.id}`}
+                                draggable="false"
+                            />
                         </div>
 
-                    </button>
+                        <div className="memory-glow" />
 
+                    </motion.button>
                 ))}
 
             </div>
 
 
-            {/* =================================
+            {/* =========================================
+                BOTTOM GLOW
+            ========================================= */}
+
+            <div className="memories-bottom-glow" />
+
+
+            {/* =========================================
+                HOME INDICATOR
+            ========================================= */}
+
+            <div className="memories-home-indicator" />
+
+
+            {/* =========================================
                 PHOTO VIEWER
-            ================================= */}
+            ========================================= */}
 
-            {selectedPhoto && (
+            <AnimatePresence>
+                {selectedMemory && (
 
-                <div
-                    className="
-                        fixed
-                        inset-0
-                        z-[100]
-                        flex
-                        items-center
-                        justify-center
-                        bg-black/85
-                        p-4
-                        backdrop-blur-md
-                    "
-                    onClick={() =>
-                        setSelectedPhoto(null)
-                    }
-                >
-
-                    <button
-                        type="button"
-                        className="
-                            absolute
-                            right-5
-                            top-5
-                            z-20
-                            flex
-                            h-10
-                            w-10
-                            items-center
-                            justify-center
-                            rounded-full
-                            border
-                            border-white/20
-                            bg-white/10
-                            text-xl
-                            text-white
-                            backdrop-blur-md
-                        "
+                    <motion.div
+                        className="memory-viewer"
+                        initial={{
+                            opacity: 0,
+                        }}
+                        animate={{
+                            opacity: 1,
+                        }}
+                        exit={{
+                            opacity: 0,
+                        }}
                         onClick={() =>
-                            setSelectedPhoto(null)
+                            setSelectedMemory(null)
                         }
                     >
-                        ×
-                    </button>
+
+                        <motion.div
+                            className="memory-viewer-content"
+                            initial={{
+                                scale: 0.75,
+                                y: 30,
+                            }}
+                            animate={{
+                                scale: 1,
+                                y: 0,
+                            }}
+                            exit={{
+                                scale: 0.8,
+                                y: 20,
+                            }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 260,
+                                damping: 22,
+                            }}
+                            onClick={(event) =>
+                                event.stopPropagation()
+                            }
+                        >
+
+                            {/* CLOSE BUTTON */}
+
+                            <button
+                                className="memory-close"
+                                onClick={() =>
+                                    setSelectedMemory(null)
+                                }
+                                aria-label="Close memory"
+                            >
+                                ×
+                            </button>
 
 
-                    <img
-                        src={selectedPhoto.src}
-                        alt="Beautiful memory"
-                        className="
-                            max-h-[85vh]
-                            max-w-full
-                            rounded-2xl
-                            object-contain
-                            shadow-[0_0_80px_rgba(255,45,149,0.25)]
-                        "
-                        onClick={(event) =>
-                            event.stopPropagation()
-                        }
-                    />
+                            {/* IMAGE */}
 
-                </div>
+                            <div className="viewer-image-frame">
 
-            )}
+                                <img
+                                    src={selectedMemory.image}
+                                    alt={`Memory ${selectedMemory.id}`}
+                                />
+
+                            </div>
+
+
+                            {/* CAPTION */}
+
+                            <p className="viewer-caption">
+                                A beautiful memory ❤️
+                            </p>
+
+                        </motion.div>
+
+                    </motion.div>
+
+                )}
+            </AnimatePresence>
 
         </section>
     );

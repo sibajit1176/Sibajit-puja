@@ -1,26 +1,18 @@
 import { useEffect, useState } from "react";
 
+const BirthdayScreen = ({ onSwipe }) => {
 
-const BirthdayScreen = () => {
-
-    const [visible, setVisible] =
-        useState(false);
-
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-
-        const timer =
-            setTimeout(() => {
-                setVisible(true);
-            }, 100);
-
+        const timer = setTimeout(() => {
+            setVisible(true);
+        }, 100);
 
         return () => {
             clearTimeout(timer);
         };
-
     }, []);
-
 
     return (
         <section
@@ -53,7 +45,7 @@ const BirthdayScreen = () => {
 
 
             {/* =====================================
-                SMALL FLOATING PARTICLES
+                BACKGROUND PARTICLES
             ====================================== */}
 
             <div
@@ -84,14 +76,17 @@ const BirthdayScreen = () => {
                     text-center
                     transition-all
                     duration-1000
-                    ${visible
-                        ? "translate-y-0 opacity-100"
-                        : "translate-y-8 opacity-0"
+                    ${
+                        visible
+                            ? "translate-y-0 opacity-100"
+                            : "translate-y-8 opacity-0"
                     }
                 `}
             >
 
-                {/* GREETING */}
+                {/* =====================================
+                    GREETING
+                ====================================== */}
 
                 <h1
                     className="
@@ -103,55 +98,72 @@ const BirthdayScreen = () => {
                     "
                 >
                     Hey Beautiful
-                    <span className="ml-2">
+
+                    <span className="ml-2 text-pink-400">
                         ♥
                     </span>
                 </h1>
 
 
-                {/* MESSAGE */}
+                {/* =====================================
+                    BENGALI POEM
+                ====================================== */}
 
                 <div
                     className="
-        mt-8
-        w-full
-        overflow-x-hidden
-        px-2
-        text-center
-    "
+                        mt-7
+                        w-full
+                        px-1
+                    "
                 >
-                    <p className="bengali-poem text-pink-100">
-                        <span className="block">
+
+                    <p
+                        className="
+                            bengali-poem
+                            text-center
+                            text-[17px]
+                            leading-[2]
+                            text-pink-100
+                            drop-shadow-[0_0_12px_rgba(255,100,200,0.25)]
+                        "
+                    >
+
+                        <span className="block whitespace-nowrap">
                             তোমার হাসিতে জেগে ওঠে আমার নীল আকাশ,
                         </span>
 
-                        <span className="block">
+                        <span className="block whitespace-nowrap">
                             তোমার ছোঁয়ায় হৃদয়জুড়ে নামে মধুর সুবাস।
                         </span>
 
-                        <span className="block">
+                        <span className="block whitespace-nowrap">
                             তোমার চোখে হারিয়ে গিয়ে ভুলে যাই সবকিছু,
                         </span>
 
-                        <span className="block">
+                        <span className="block whitespace-nowrap">
                             তোমায় ভালোবেসেই কাটুক আমার জীবনটুকু।
                         </span>
+
                     </p>
+
                 </div>
 
 
-                {/* BIRTHDAY */}
+                {/* =====================================
+                    BIRTHDAY TITLE
+                ====================================== */}
 
                 <h2
                     className="
-                        mt-7
-                        text-[25px]
+                        mt-6
+                        text-[24px]
                         font-medium
                         text-pink-100
                         drop-shadow-[0_0_15px_rgba(255,80,190,0.5)]
                     "
                 >
                     Happy Birthday!
+
                     <span className="ml-2">
                         🎂💖
                     </span>
@@ -165,13 +177,13 @@ const BirthdayScreen = () => {
                 <div
                     className="
                         relative
-                        mt-7
-                        w-[270px]
+                        mt-6
+                        w-[250px]
                         rotate-[-2deg]
                     "
                 >
 
-                    {/* Back photo frame */}
+                    {/* BACK FRAME */}
 
                     <div
                         className="
@@ -188,7 +200,7 @@ const BirthdayScreen = () => {
                     />
 
 
-                    {/* Main photo */}
+                    {/* MAIN PHOTO */}
 
                     <div
                         className="
@@ -206,7 +218,7 @@ const BirthdayScreen = () => {
                             alt="Birthday memory"
                             className="
                                 block
-                                h-[290px]
+                                h-[270px]
                                 w-full
                                 object-cover
                             "
@@ -215,7 +227,9 @@ const BirthdayScreen = () => {
                     </div>
 
 
-                    {/* Floating hearts */}
+                    {/* =====================================
+                        FLOATING HEARTS
+                    ====================================== */}
 
                     <span
                         className="
@@ -231,7 +245,6 @@ const BirthdayScreen = () => {
                         ♥
                     </span>
 
-
                     <span
                         className="
                             absolute
@@ -245,7 +258,6 @@ const BirthdayScreen = () => {
                     >
                         ♥
                     </span>
-
 
                     <span
                         className="
@@ -264,27 +276,48 @@ const BirthdayScreen = () => {
                 </div>
 
 
-                {/* SWIPE TEXT */}
+                {/* =====================================
+                    SWIPE TO UNIVERSE
+                ====================================== */}
 
-                <div
+                <button
+                    type="button"
+                    onClick={onSwipe}
                     className="
-                        mt-6
-                        text-[13px]
+                        mt-5
+                        cursor-pointer
+                        border-none
+                        bg-transparent
+                        text-[14px]
                         tracking-wide
-                        text-white/70
+                        text-white/75
+                        transition-all
+                        duration-300
+                        hover:scale-105
+                        hover:text-pink-300
+                        active:scale-95
                     "
                 >
+
                     Swipe
-                    <span className="ml-2 text-pink-300">
+
+                    <span
+                        className="
+                            ml-2
+                            text-lg
+                            text-pink-300
+                            animate-pulse
+                        "
+                    >
                         →
                     </span>
-                </div>
+
+                </button>
 
             </div>
 
         </section>
     );
 };
-
 
 export default BirthdayScreen;
