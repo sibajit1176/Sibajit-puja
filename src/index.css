@@ -44,3 +44,194 @@ button {
 
     white-space: nowrap;
 }
+/* =========================================================
+   BIRTHDAY REVEAL ANIMATIONS
+========================================================= */
+
+@keyframes birthdayParticle {
+
+    0% {
+        opacity: 0.15;
+        transform: translate3d(0, 0, 0) scale(0.6);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translate3d(
+            0,
+            -18px,
+            0
+        ) scale(1);
+    }
+
+    100% {
+        opacity: 0.1;
+        transform: translate3d(
+            0,
+            -35px,
+            0
+        ) scale(0.5);
+    }
+}
+
+
+.birthday-particle {
+    animation-name: birthdayParticle;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+
+    box-shadow:
+        0 0 7px rgba(255, 120, 220, 0.9);
+}
+
+
+/* =========================================================
+   FLOATING HEART
+========================================================= */
+
+@keyframes floatHeart {
+
+    0%,
+    100% {
+        transform:
+            translateY(0)
+            rotate(-8deg)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translateY(-13px)
+            rotate(8deg)
+            scale(1.12);
+    }
+}
+
+
+/* =========================================================
+   SWIPE ARROW
+========================================================= */
+
+@keyframes swipeArrow {
+
+    0%,
+    100% {
+        transform: translateX(0);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform: translateX(7px);
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   BACKGROUND ORB
+========================================================= */
+
+@keyframes birthdayOrb {
+
+    0%,
+    100% {
+        transform:
+            translateX(-50%)
+            scale(0.9);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform:
+            translateX(-50%)
+            scale(1.15);
+        opacity: 1;
+    }
+}
+
+
+.birthday-orb {
+    animation:
+        birthdayOrb
+        7s
+        ease-in-out
+        infinite;
+}
+
+
+/* =========================================================
+   LEFT NEBULA
+========================================================= */
+
+@keyframes nebulaLeft {
+
+    0%,
+    100% {
+        transform:
+            translate(0, 0)
+            scale(1);
+        opacity: 0.5;
+    }
+
+    50% {
+        transform:
+            translate(30px, -20px)
+            scale(1.12);
+        opacity: 0.9;
+    }
+}
+
+
+.birthday-nebula-left {
+    animation:
+        nebulaLeft
+        9s
+        ease-in-out
+        infinite;
+}
+
+
+/* =========================================================
+   RIGHT NEBULA
+========================================================= */
+
+@keyframes nebulaRight {
+
+    0%,
+    100% {
+        transform:
+            translate(0, 0)
+            scale(1);
+        opacity: 0.4;
+    }
+
+    50% {
+        transform:
+            translate(-30px, 20px)
+            scale(1.15);
+        opacity: 0.8;
+    }
+}
+
+
+.birthday-nebula-right {
+    animation:
+        nebulaRight
+        11s
+        ease-in-out
+        infinite;
+}
+
+
+/* =========================================================
+   MOBILE TUNING
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .birthday-reveal {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+}
