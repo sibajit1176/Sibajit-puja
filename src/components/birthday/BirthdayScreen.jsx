@@ -6,6 +6,17 @@ const BirthdayScreen = ({ onSwipe }) => {
     const [isPressed, setIsPressed] = useState(false);
 
     // =========================================================
+    // CHECK BIRTHDAY DATE
+    // August 31 = Birthday
+    // =========================================================
+
+    const today = new Date();
+
+    const isBirthday = 
+    today.getMonth() === 7 &&
+    today.getDate() === 31;
+
+    // =========================================================
     // STARS
     // =========================================================
 
@@ -437,26 +448,6 @@ const BirthdayScreen = ({ onSwipe }) => {
                             ♥
                         </motion.span>
                     </h1>
-
-                    {/* SMALL SUBTITLE */}
-
-                    <motion.p
-                        className="
-                            mt-1
-                            text-[10px]
-                            uppercase
-                            tracking-[0.35em]
-                            text-pink-200/45
-                        "
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{
-                            delay: 1,
-                            duration: 1,
-                        }}
-                    >
-                        A little something for you
-                    </motion.p>
                 </motion.div>
 
                 {/* =================================================
@@ -550,50 +541,514 @@ const BirthdayScreen = ({ onSwipe }) => {
                 </motion.div>
 
                 {/* =================================================
-                    HAPPY BIRTHDAY
+                    DYNAMIC TITLE
                 ================================================== */}
 
-                <motion.h2
+               {isBirthday ? (
+    /* =================================================
+       🎂 HAPPY BIRTHDAY — SINGLE LINE
+    ================================================== */
+    <motion.div
+        className="
+            relative
+            mt-5
+            flex
+            w-full
+            items-center
+            justify-center
+            whitespace-nowrap
+        "
+        initial={{
+            opacity: 0,
+            y: 18,
+            scale: 0.85,
+        }}
+        animate={{
+            opacity: 1,
+            y: 0,
+            scale: 1,
+        }}
+        transition={{
+            duration: 1.2,
+            delay: 2,
+            ease: [0.22, 1, 0.36, 1],
+        }}
+    >
+        {/* SOFT GLOW */}
+        <motion.div
+            className="
+                pointer-events-none
+                absolute
+                -inset-x-8
+                -inset-y-5
+                rounded-full
+                bg-[radial-gradient(ellipse,rgba(255,190,90,0.14),rgba(60,220,220,0.08),transparent_70%)]
+                blur-2xl
+            "
+            animate={{
+                opacity: [0.35, 0.8, 0.35],
+                scale: [0.9, 1.08, 0.9],
+            }}
+            transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+            }}
+        />
+
+        {/* LEFT SPARKLE */}
+        <motion.span
+            className="
+                mr-2
+                text-[11px]
+                text-amber-200
+                drop-shadow-[0_0_8px_rgba(255,210,100,0.9)]
+            "
+            animate={{
+                opacity: [0.2, 1, 0.2],
+                scale: [0.7, 1.3, 0.7],
+                rotate: [0, 25, 0],
+            }}
+            transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+            }}
+        >
+            ✦
+        </motion.span>
+
+        {/* HAPPY */}
+        <div
+            className="
+                flex
+                items-center
+                whitespace-nowrap
+            "
+            style={{
+                fontFamily:
+                    '"Playfair Display", Georgia, serif',
+            }}
+        >
+            {"Happy".split("").map((letter, index) => (
+                <motion.span
+                    key={`happy-${index}`}
                     className="
-                        mt-4
-                        text-[24px]
-                        font-semibold
-                        text-pink-50
-                        drop-shadow-[0_0_18px_rgba(255,80,190,0.6)]
+                        inline-block
+                        text-[25px]
+                        font-medium
+                        italic
                     "
+                    style={{
+                        color: [
+                            "#FFD166",
+                            "#FFB86C",
+                            "#FFE08A",
+                            "#FFC857",
+                            "#FFE7A3",
+                        ][index],
+                        textShadow: `
+                            0 0 5px rgba(255,230,150,0.9),
+                            0 0 14px rgba(255,190,80,0.55)
+                        `,
+                    }}
                     initial={{
                         opacity: 0,
-                        scale: 0.85,
+                        y: 15,
+                        rotate: index % 2 === 0 ? -8 : 8,
                     }}
                     animate={{
                         opacity: 1,
-                        scale: 1,
+                        y: [0, -3, 0],
+                        rotate: 0,
                     }}
                     transition={{
-                        duration: 0.9,
-                        delay: 2,
-                        type: "spring",
-                        stiffness: 180,
-                    }}
-                >
-                    Happy Birthday!
-
-                    <motion.span
-                        className="ml-2 inline-block"
-                        animate={{
-                            y: [0, -4, 0],
-                            rotate: [0, -5, 5, 0],
-                        }}
-                        transition={{
-                            duration: 2,
+                        opacity: {
+                            duration: 0.45,
+                            delay: 2.1 + index * 0.08,
+                        },
+                        y: {
+                            duration: 3,
+                            delay: 3 + index * 0.08,
                             repeat: Infinity,
                             ease: "easeInOut",
+                        },
+                        rotate: {
+                            duration: 0.5,
+                            delay: 2.1 + index * 0.08,
+                        },
+                    }}
+                >
+                    {letter}
+                </motion.span>
+            ))}
+        </div>
+
+        {/* SPACE BETWEEN WORDS */}
+        <span className="w-2" />
+
+        {/* BIRTHDAY */}
+        <div
+            className="
+                flex
+                items-center
+                whitespace-nowrap
+            "
+            style={{
+                fontFamily:
+                    '"Playfair Display", Georgia, serif',
+            }}
+        >
+            {"Birthday".split("").map((letter, index) => (
+                <motion.span
+                    key={`birthday-${index}`}
+                    className="
+                        inline-block
+                        text-[24px]
+                        font-semibold
+                    "
+                    style={{
+                        color: [
+                            "#7DE2D1",
+                            "#8FE3CF",
+                            "#A7F3D0",
+                            "#6DD5ED",
+                            "#9BE7E0",
+                            "#7ED6DF",
+                            "#B8F2E6",
+                            "#8DE0D3",
+                        ][index],
+                        textShadow: `
+                            0 0 5px rgba(190,255,245,0.95),
+                            0 0 14px rgba(70,220,210,0.6)
+                        `,
+                    }}
+                    initial={{
+                        opacity: 0,
+                        y: 15,
+                        rotate: index % 2 === 0 ? 8 : -8,
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: [0, -3, 0],
+                        rotate: 0,
+                    }}
+                    transition={{
+                        opacity: {
+                            duration: 0.45,
+                            delay: 2.55 + index * 0.07,
+                        },
+                        y: {
+                            duration: 3.2,
+                            delay: 3.2 + index * 0.07,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                        },
+                        rotate: {
+                            duration: 0.5,
+                            delay: 2.55 + index * 0.07,
+                        },
+                    }}
+                >
+                    {letter}
+                </motion.span>
+            ))}
+        </div>
+
+        {/* CAKE */}
+        <motion.span
+            className="
+                ml-2
+                text-[23px]
+                leading-none
+                drop-shadow-[0_0_12px_rgba(255,210,100,0.8)]
+            "
+            animate={{
+                y: [0, -4, 0],
+                rotate: [-4, 4, -4],
+                scale: [1, 1.08, 1],
+            }}
+            transition={{
+                duration: 2.2,
+                repeat: Infinity,
+                ease: "easeInOut",
+            }}
+        >
+            🎂
+        </motion.span>
+
+        {/* HEART */}
+        <motion.span
+            className="
+                ml-1
+                text-[18px]
+                leading-none
+                text-rose-300
+                drop-shadow-[0_0_12px_rgba(255,100,170,0.9)]
+            "
+            animate={{
+                scale: [1, 1.3, 1],
+                y: [0, -3, 0],
+            }}
+            transition={{
+                duration: 1.6,
+                repeat: Infinity,
+                ease: "easeInOut",
+            }}
+        >
+            ♥
+        </motion.span>
+
+        {/* RIGHT SPARKLE */}
+        <motion.span
+            className="
+                ml-2
+                text-[11px]
+                text-cyan-200
+                drop-shadow-[0_0_8px_rgba(80,230,230,0.9)]
+            "
+            animate={{
+                opacity: [0.2, 1, 0.2],
+                scale: [0.7, 1.3, 0.7],
+                rotate: [0, -25, 0],
+            }}
+            transition={{
+                duration: 2,
+                delay: 0.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+            }}
+        >
+            ✦
+        </motion.span>
+    </motion.div>
+) : (
+    <motion.div
+                        className="
+        relative
+        mt-4
+        flex
+        items-center
+        justify-center
+        px-8
+    "
+                        initial={{
+                            opacity: 0,
+                            y: 15,
+                            scale: 0.85,
+                        }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                        }}
+                        transition={{
+                            duration: 1.2,
+                            delay: 2,
+                            ease: [0.22, 1, 0.36, 1],
                         }}
                     >
-                        🎂💖
-                    </motion.span>
-                </motion.h2>
+                        {/* =====================================================
+        SOFT ROMANTIC GLOW
+    ====================================================== */}
 
+                        <motion.div
+                            className="
+            pointer-events-none
+            absolute
+            -inset-x-14
+            -inset-y-8
+            rounded-full
+            bg-[radial-gradient(ellipse,rgba(255,45,185,0.30),transparent_68%)]
+            blur-2xl
+        "
+                            animate={{
+                                opacity: [0.35, 0.75, 0.35],
+                                scale: [0.9, 1.1, 0.9],
+                            }}
+                            transition={{
+                                duration: 4,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        />
+
+                        {/* =====================================================
+        LEFT DECORATIVE HEART
+    ====================================================== */}
+
+                        <motion.span
+                            className="
+            absolute
+            -left-3
+            top-1/2
+            -translate-y-1/2
+            text-[14px]
+            text-pink-300/80
+            drop-shadow-[0_0_10px_rgba(255,70,190,0.9)]
+        "
+                            animate={{
+                                y: ["-50%", "-70%", "-50%"],
+                                scale: [0.8, 1.15, 0.8],
+                                opacity: [0.3, 0.9, 0.3],
+                            }}
+                            transition={{
+                                duration: 3,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        >
+                            ♥
+                        </motion.span>
+
+                        {/* =====================================================
+        TEXT + BIG HEART
+    ====================================================== */}
+
+                        <div
+                            className="
+            relative
+            z-10
+            flex
+            items-center
+            justify-center
+        "
+                        >
+                            {/* =================================================
+            I LOVE YOU
+        ================================================= */}
+
+                            <motion.h2
+                                className="
+                whitespace-nowrap
+                text-[30px]
+                font-normal
+                tracking-[0.01em]
+                text-pink-50
+            "
+                                style={{
+                                    fontFamily:
+                                        '"URW Chancery L", "Apple Chancery", "Snell Roundhand", "Segoe Print", cursive',
+
+                                    textShadow: `
+                    0 0 6px rgba(255,230,248,0.95),
+                    0 0 15px rgba(255,90,195,0.75),
+                    0 0 30px rgba(255,40,180,0.45)
+                `,
+                                }}
+                                animate={{
+                                    opacity: [0.88, 1, 0.88],
+                                    y: [0, -2, 0],
+                                }}
+                                transition={{
+                                    duration: 3.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                }}
+                            >
+                                I Love You
+                            </motion.h2>
+
+                            {/* =================================================
+            BIG ROMANTIC HEART
+        ================================================= */}
+
+                            <motion.span
+                                className="
+                relative
+                ml-3
+                text-[38px]
+                leading-none
+                text-pink-400
+            "
+                                style={{
+                                    textShadow: `
+                    0 0 8px rgba(255,130,220,1),
+                    0 0 20px rgba(255,50,190,0.9),
+                    0 0 40px rgba(255,30,180,0.6)
+                `,
+                                }}
+                                animate={{
+                                    scale: [1, 1.18, 1],
+                                    rotate: [0, -7, 7, 0],
+                                }}
+                                transition={{
+                                    duration: 1.8,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                }}
+                            >
+                                ♥
+                            </motion.span>
+
+                        </div>
+
+                        {/* =====================================================
+        RIGHT DECORATIVE HEART
+    ====================================================== */}
+
+                        <motion.span
+                            className="
+            absolute
+            -right-3
+            top-1/2
+            -translate-y-1/2
+            text-[14px]
+            text-pink-300/80
+            drop-shadow-[0_0_10px_rgba(255,70,190,0.9)]
+        "
+                            animate={{
+                                y: ["-50%", "-30%", "-50%"],
+                                scale: [0.8, 1.15, 0.8],
+                                opacity: [0.3, 0.9, 0.3],
+                            }}
+                            transition={{
+                                duration: 3.2,
+                                delay: 0.6,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                            }}
+                        >
+                            ♥
+                        </motion.span>
+
+                        {/* =====================================================
+        LIGHT SWEEP
+    ====================================================== */}
+
+                        <motion.div
+                            className="
+            pointer-events-none
+            absolute
+            z-20
+            h-[60px]
+            w-[45px]
+            rotate-[20deg]
+            bg-gradient-to-r
+            from-transparent
+            via-white/35
+            to-transparent
+            blur-md
+        "
+                            initial={{
+                                left: "-50%",
+                                opacity: 0,
+                            }}
+                            animate={{
+                                left: ["-50%", "150%"],
+                                opacity: [0, 0.8, 0],
+                            }}
+                            transition={{
+                                duration: 2.6,
+                                delay: 3.5,
+                                repeat: Infinity,
+                                repeatDelay: 5,
+                                ease: "easeInOut",
+                            }}
+                        />
+
+                    </motion.div>
+)}
                 {/* =================================================
                     PHOTO WRAPPER
                 ================================================== */}

@@ -10,26 +10,54 @@ import {
 import * as THREE from "three";
 
 
+/* =========================================================
+   HEART PARTICLES
+========================================================= */
+
 const HeartParticles = ({
     exploding = false,
 }) => {
 
-    const particlesRef = useRef();
+    const particlesRef =
+        useRef(null);
 
+    /*
+    =========================================================
+    EXPLOSION TIMING
+
+    These refs make the explosion start from the exact
+    moment "exploding" becomes true.
+    =========================================================
+    */
+
+    const explosionTimeRef =
+        useRef(null);
+
+    const wasExplodingRef =
+        useRef(false);
+
+
+    /*
+    =========================================================
+    CREATE HEART PARTICLE DATA
+    =========================================================
+    */
 
     const data = useMemo(() => {
 
         const positions = [];
         const velocities = [];
+        const randoms = [];
 
-
-        /* ==========================================
-           HEART SHAPE
-        =========================================== */
+        /*
+        -----------------------------------------------------
+        HEART OUTLINE
+        -----------------------------------------------------
+        */
 
         const heartShape = [];
 
-        const segments = 400;
+        const segments = 500;
 
 
         for (
@@ -42,6 +70,10 @@ const HeartParticles = ({
                 (Math.PI * 2 * i) /
                 segments;
 
+
+            /*
+            Mathematical heart
+            */
 
             const x =
                 16 *
@@ -69,9 +101,11 @@ const HeartParticles = ({
         }
 
 
-        /* ==========================================
-           POINT INSIDE HEART
-        =========================================== */
+        /*
+        =====================================================
+        POINT INSIDE HEART
+        =====================================================
+        */
 
         const isInsideHeart = (
             x,
@@ -120,15 +154,17 @@ const HeartParticles = ({
 
 
             return inside;
+
         };
 
 
-        /* ==========================================
-           CREATE HEART PARTICLES
-        =========================================== */
+        /*
+        =====================================================
+        CREATE PARTICLES
+        =====================================================
+        */
 
         const count = 3000;
-
 
         let created = 0;
 
@@ -137,15 +173,27 @@ const HeartParticles = ({
             created < count
         ) {
 
+            /*
+            -------------------------------------------------
+            RANDOM POINT
+            -------------------------------------------------
+            */
+
             const x =
                 (Math.random() * 2 - 1) *
-                1.2;
+                1.25;
 
 
             const y =
                 (Math.random() * 2 - 1) *
-                1.2;
+                1.25;
 
+
+            /*
+            -------------------------------------------------
+            ONLY KEEP POINTS INSIDE HEART
+            -------------------------------------------------
+            */
 
             if (
                 !isInsideHeart(
@@ -157,10 +205,22 @@ const HeartParticles = ({
             }
 
 
+            /*
+            -------------------------------------------------
+            3D DEPTH
+            -------------------------------------------------
+            */
+
             const z =
                 (Math.random() - 0.5) *
-                0.35;
+                0.42;
 
+
+            /*
+            -------------------------------------------------
+            SAVE ORIGINAL POSITION
+            -------------------------------------------------
+            */
 
             positions.push(
                 x,
@@ -169,25 +229,64 @@ const HeartParticles = ({
             );
 
 
-            /* ==================================
-               EXPLOSION VELOCITY
+            /*
+            =================================================
+            EXPLOSION DIRECTION
+            =================================================
+            */
 
-               Every particle gets its own
-               random direction.
-            =================================== */
+            /*
+            Start direction based on particle position.
+            Add randomness so the explosion feels organic.
+            */
 
             const direction =
                 new THREE.Vector3(
-                    x,
-                    y,
-                    z
-                ).normalize();
+                    x * 1.25 +
+                        (Math.random() - 0.5) *
+                        0.45,
 
+                    y * 1.15 +
+                        (Math.random() - 0.5) *
+                        0.55,
+
+                    z * 2 +
+                        (Math.random() - 0.5) *
+                        1.2
+                );
+
+
+            /*
+            Avoid zero-length direction
+            */
+
+            if (
+                direction.lengthSq() <
+                0.0001
+            ) {
+
+                direction.set(
+                    Math.random() - 0.5,
+                    Math.random() - 0.5,
+                    Math.random() - 0.5
+                );
+
+            }
+
+
+            direction.normalize();
+
+
+            /*
+            -------------------------------------------------
+            RANDOM EXPLOSION SPEED
+            -------------------------------------------------
+            */
 
             const speed =
-                1.5 +
+                1.8 +
                 Math.random() *
-                    3.5;
+                    3.8;
 
 
             velocities.push(
@@ -202,12 +301,26 @@ const HeartParticles = ({
             );
 
 
+            /*
+            -------------------------------------------------
+            RANDOM VALUES
+
+            Used later for organic floating motion.
+            -------------------------------------------------
+            */
+
+            randoms.push(
+                Math.random()
+            );
+
+
             created++;
 
         }
 
 
         return {
+
             positions:
                 new Float32Array(
                     positions
@@ -217,10 +330,22 @@ const HeartParticles = ({
                 new Float32Array(
                     velocities
                 ),
+
+            randoms:
+                new Float32Array(
+                    randoms
+                ),
+
         };
 
     }, []);
 
+
+    /*
+    =========================================================
+    ORIGINAL POSITION COPY
+    =========================================================
+    */
 
     const originalPositions =
         useMemo(
@@ -232,12 +357,66 @@ const HeartParticles = ({
         );
 
 
+    /*
+    =========================================================
+    ANIMATION
+    =========================================================
+    */
+
     useFrame((state) => {
 
         if (
             !particlesRef.current
         ) {
             return;
+        }
+
+
+        const time =
+            state.clock.getElapsedTime();
+
+
+        /*
+        =====================================================
+        DETECT EXPLOSION START
+        =====================================================
+        */
+
+        if (
+            exploding &&
+            !wasExplodingRef.current
+        ) {
+
+            /*
+            IMPORTANT:
+
+            Store the exact Three.js clock time
+            when explosion begins.
+            */
+
+            explosionTimeRef.current =
+                time;
+
+            wasExplodingRef.current =
+                true;
+
+        }
+
+
+        /*
+        =====================================================
+        RESET WHEN NOT EXPLODING
+        =====================================================
+        */
+
+        if (!exploding) {
+
+            wasExplodingRef.current =
+                false;
+
+            explosionTimeRef.current =
+                null;
+
         }
 
 
@@ -249,47 +428,69 @@ const HeartParticles = ({
             geometry.attributes.position;
 
 
-        const time =
-            state.clock.getElapsedTime();
+        const positions =
+            positionAttribute.array;
 
 
-        /* ==========================================
-           NORMAL HEART
-        =========================================== */
+        /*
+        =====================================================
+        NORMAL HEART
+        =====================================================
+        */
 
         if (!exploding) {
 
             for (
                 let i = 0;
-                i <
-                originalPositions.length;
+                i < positions.length;
                 i++
             ) {
 
-                positionAttribute.array[i] =
+                positions[i] =
                     originalPositions[i];
 
             }
 
 
+            /*
+            -------------------------------------------------
+            HEART FLOATING ROTATION
+            -------------------------------------------------
+            */
+
             particlesRef.current.rotation.y =
                 Math.sin(
                     time * 0.35
-                ) * 0.08;
+                ) *
+                0.08;
 
 
             particlesRef.current.rotation.x =
                 Math.sin(
                     time * 0.25
-                ) * 0.025;
+                ) *
+                0.025;
 
+
+            particlesRef.current.rotation.z =
+                Math.sin(
+                    time * 0.5
+                ) *
+                0.015;
+
+
+            /*
+            -------------------------------------------------
+            HEART BEAT
+            -------------------------------------------------
+            */
 
             const pulse =
                 1 +
                 Math.sin(
                     time * 3
                 ) *
-                    0.025;
+                0.025;
 
 
             particlesRef.current.scale.set(
@@ -304,26 +505,91 @@ const HeartParticles = ({
 
 
             return;
+
         }
 
 
-        /* ==========================================
-           EXPLOSION
+        /*
+        =====================================================
+        EXPLOSION
+        =====================================================
+        */
 
-           Particles fly outward.
-        =========================================== */
+        /*
+        IMPORTANT FIX:
+
+        Do NOT use:
+
+        time % 10
+
+        Instead use the exact timestamp from the moment
+        exploding became true.
+        */
+
+        const explosionStart =
+            explosionTimeRef.current ??
+            time;
+
+
+        /*
+        -----------------------------------------------------
+        HOW LONG EXPLOSION LASTS
+        -----------------------------------------------------
+        */
+
+        const explosionDuration =
+            1.4;
+
+
+        const elapsed =
+            time -
+            explosionStart;
+
+
+        /*
+        Progress:
+
+        0 = just clicked
+        1 = explosion completed
+        */
 
         const explosionProgress =
-            Math.min(
-                (time % 10) / 2.2,
+            THREE.MathUtils.clamp(
+                elapsed /
+                    explosionDuration,
+                0,
                 1
             );
 
 
+        /*
+        =====================================================
+        STRONG EXPLOSION EASING
+        =====================================================
+        */
+
+        /*
+        Starts very quickly and then slows down.
+        */
+
+        const eased =
+            1 -
+            Math.pow(
+                1 -
+                    explosionProgress,
+                3
+            );
+
+
+        /*
+        =====================================================
+        MOVE EVERY PARTICLE
+        =====================================================
+        */
+
         for (
             let i = 0;
-            i <
-            positionAttribute.array.length;
+            i < positions.length;
             i += 3
         ) {
 
@@ -331,48 +597,123 @@ const HeartParticles = ({
                 i / 3;
 
 
+            /*
+            -------------------------------------------------
+            ORIGINAL POSITION
+            -------------------------------------------------
+            */
+
             const startX =
                 originalPositions[i];
 
             const startY =
-                originalPositions[i + 1];
+                originalPositions[
+                    i + 1
+                ];
 
             const startZ =
-                originalPositions[i + 2];
+                originalPositions[
+                    i + 2
+                ];
 
+
+            /*
+            -------------------------------------------------
+            VELOCITY
+            -------------------------------------------------
+            */
 
             const velocityX =
                 data.velocities[
-                    particleIndex * 3
+                    i
                 ];
 
             const velocityY =
                 data.velocities[
-                    particleIndex * 3 + 1
+                    i + 1
                 ];
 
             const velocityZ =
                 data.velocities[
-                    particleIndex * 3 + 2
+                    i + 2
                 ];
 
 
-            positionAttribute.array[i] =
+            /*
+            -------------------------------------------------
+            EXPLOSION POSITION
+            -------------------------------------------------
+            */
+
+            positions[i] =
                 startX +
                 velocityX *
-                    explosionProgress;
+                    eased;
 
 
-            positionAttribute.array[i + 1] =
+            positions[i + 1] =
                 startY +
                 velocityY *
-                    explosionProgress;
+                    eased;
 
 
-            positionAttribute.array[i + 2] =
+            positions[i + 2] =
                 startZ +
                 velocityZ *
-                    explosionProgress;
+                    eased;
+
+
+            /*
+            =================================================
+            ORGANIC PARTICLE MOVEMENT
+            =================================================
+            */
+
+            const random =
+                data.randoms[
+                    particleIndex
+                ];
+
+
+            /*
+            Small horizontal movement
+            */
+
+            positions[i] +=
+                Math.sin(
+                    time * 2 +
+                    particleIndex *
+                        0.17
+                ) *
+                0.015 *
+                explosionProgress;
+
+
+            /*
+            Small vertical movement
+            */
+
+            positions[i + 1] +=
+                Math.cos(
+                    time * 1.7 +
+                    particleIndex *
+                        0.13
+                ) *
+                0.015 *
+                explosionProgress;
+
+
+            /*
+            Depth movement
+            */
+
+            positions[i + 2] +=
+                Math.sin(
+                    time * 1.4 +
+                    random * 10
+                ) *
+                0.01 *
+                explosionProgress;
 
         }
 
@@ -381,23 +722,71 @@ const HeartParticles = ({
             true;
 
 
-        /* ==========================================
-           SPREAD THE PARTICLES THROUGH SCREEN
-        =========================================== */
+        /*
+        =====================================================
+        PARTICLE GROUP ROTATION
+        =====================================================
+        */
+
+        particlesRef.current.rotation.y =
+            Math.sin(
+                time * 0.6
+            ) *
+            0.12;
+
+
+        particlesRef.current.rotation.x =
+            Math.sin(
+                time * 0.45
+            ) *
+            0.08;
+
+
+        particlesRef.current.rotation.z =
+            explosionProgress *
+            Math.PI *
+            0.15;
+
+
+        /*
+        =====================================================
+        PARTICLE GROUP SCALE
+        =====================================================
+        */
+
+        /*
+        Slight expansion during explosion.
+        */
+
+        const explosionScale =
+            0.82 +
+            explosionProgress *
+                0.15;
+
 
         particlesRef.current.scale.set(
-            1,
-            1,
-            1
+            explosionScale,
+            explosionScale,
+            explosionScale
         );
 
     });
 
 
+    /*
+    =========================================================
+    RENDER
+    =========================================================
+    */
+
     return (
         <points
             ref={particlesRef}
-            position={[0, 0.55, 0]}
+            position={[
+                0,
+                0.55,
+                0,
+            ]}
         >
 
             <bufferGeometry>
@@ -421,9 +810,9 @@ const HeartParticles = ({
                 color="#ff62c8"
                 size={0.035}
                 transparent
-                opacity={0.95}
-                depthWrite={false}
+                opacity={0.96}
                 sizeAttenuation
+                depthWrite={false}
                 blending={
                     THREE.AdditiveBlending
                 }
@@ -431,6 +820,7 @@ const HeartParticles = ({
 
         </points>
     );
+
 };
 
 
